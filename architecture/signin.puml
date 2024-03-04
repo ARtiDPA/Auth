@@ -1,22 +1,27 @@
 @startuml Вход
 title: Вход
-Клиент -> Auth_servis: login, password - [POST]
-Auth_servis -> Auth_servis: Кэширование пароля
-alt Проверка на валидность
-    Auth_servis -> PostgreSQL: Поиск аккаунта
-    PostgreSQL -> Auth_servis: Ворнуть id клиента
-    alt Проверяем аккаунт на наличие токенов в Redis
-        Auth_servis -> Redis: id клиента
-        Redis -> Auth_servis: access_token, refresh_token
-        Auth_servis -> Клиент: access_token, refresh_token
-    else Создаем токены
-    Auth_servis -> Auth_servis: Создаём access_token и refresh_token
-    Auth_servis -> Redis: id пользователя, access_token, refresh_token
-    Redis -> Auth_servis: Токены добавлены
-    Auth_servis -> Клиент: access_token, refresh_token
+Client -> AuthService: login, password - [POST]
+alt #LightBlue Проверка на валидность
+    activate AuthService
+    AuthService -> AuthService: Кэширование пароля
+    AuthService -> PostgreSQL: Поиск аккаунта
+    activate PostgreSQL
+    PostgreSQL -> AuthService: Вeрнуть Client ID
+    deactivate PostgreSQL
+    alt #LightGreen Проверяем аккаунт на наличие токенов в Redis
+        activate Redis
+        AuthService -> Redis: Client ID
+        Redis -> AuthService: access_token, refresh_token
+        AuthService -> Client: access_token, refresh_token
+    else #LightCoral Создаем токены
+        AuthService -> AuthService: Создаём access_token и refresh_token
+        AuthService -> Redis: Client ID, access_token, refresh_token
+        Redis -> AuthService: Токены добавлены
+        deactivate Redis
+        AuthService -> Client: access_token, refresh_token
     end
-else Значения не валидны
-    PostgreSQL -> Auth_servis: Вернуть False
-    Auth_servis -> Клиент: Вернуть False
+else #LightCoral Значения не валидны
+    PostgreSQL -> AuthService: Вернуть False
+    AuthService -> Client: Вернуть False
 end
 @enduml
