@@ -1,0 +1,22 @@
+@startuml Вход
+title: Вход
+Клиент -> Auth_servis: login, password - [POST]
+Auth_servis -> Auth_servis: Кэширование пароля
+alt Проверка на валидность
+    Auth_servis -> PostgreSQL: Поиск аккаунта
+    PostgreSQL -> Auth_servis: Ворнуть id клиента
+    alt Проверяем аккаунт на наличие токенов в Redis
+        Auth_servis -> Redis: id клиента
+        Redis -> Auth_servis: access_token, refresh_token
+        Auth_servis -> Клиент: access_token, refresh_token
+    else Создаем токены
+    Auth_servis -> Auth_servis: Создаём access_token и refresh_token
+    Auth_servis -> Redis: id пользователя, access_token, refresh_token
+    Redis -> Auth_servis: Токены добавлены
+    Auth_servis -> Клиент: access_token, refresh_token
+    end
+else Значения не валидны
+    PostgreSQL -> Auth_servis: Вернуть False
+    Auth_servis -> Клиент: Вернуть False
+end
+@enduml
