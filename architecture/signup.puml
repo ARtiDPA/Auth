@@ -1,0 +1,21 @@
+@startuml Регистрация
+title: Регистрация
+Client -> AuthService: data - [POST]
+alt #LightBlue проверка почты, логина, телефона
+    activate AuthService
+    AuthService -> AuthService: Проверка на правильное написание почты, номера телефона
+    alt #LightGreen проверка на наличее данных в БД
+        activate PostgreSQL
+        AuthService -> PostgreSQL: Login, main, password - [POST]
+        PostgreSQL -> AuthService: Схожесть данных отсутсвует
+        AuthService -> Client: Вернуть True
+    else #LightCoral
+        PostgreSQL -> AuthService: Данные схожи
+        deactivate PostgreSQL
+        AuthService -> Client: Вернуть False
+    end    
+else #LightCoral
+    AuthService -> Client: Вернуть False
+    deactivate AuthService
+end
+@enduml
