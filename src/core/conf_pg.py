@@ -9,7 +9,7 @@ class Settings_pgsql(BaseSettings):
     DB_NAME: str
 
     @property
-    def data_base_pgsql(self):
+    def data_base_pgsql(self) -> str:
         return f"""postgresql+psycopg2://
         {self.DB_USER}:
         {self.DB_PASSWORD}@
