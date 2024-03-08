@@ -6,16 +6,19 @@ alt #LightBlue проверка почты, логина, телефона
     AuthService -> AuthService: Проверка на правильное написание почты, номера телефона
     alt #LightGreen проверка на наличее данных в БД
         activate PostgreSQL
-        AuthService -> PostgreSQL: Login, main, password - [POST]
+        AuthService -> PostgreSQL: Login, mail, password - [POST]
         PostgreSQL -> AuthService: Схожесть данных отсутсвует
-        AuthService -> Client: Вернуть True
+        AuthService -> AuthService: Создать access_token, refresh_token
+        activate Redis
+        AuthService -> Redis: access_token, refresh_token
+        Redis -> AuthService: 200
     else #LightCoral
         PostgreSQL -> AuthService: Данные схожи
         deactivate PostgreSQL
-        AuthService -> Client: Вернуть False
+        AuthService -> Client: 404
     end    
 else #LightCoral
-    AuthService -> Client: Вернуть False
+    AuthService -> Client: 404
     deactivate AuthService
 end
 @enduml

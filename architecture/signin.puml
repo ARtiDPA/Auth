@@ -6,7 +6,7 @@ alt #LightBlue Проверка на валидность
     AuthService -> AuthService: Кэширование пароля
     AuthService -> PostgreSQL: Поиск аккаунта
     activate PostgreSQL
-    PostgreSQL -> AuthService: Вeрнуть Client ID
+    PostgreSQL -> AuthService: 200
     deactivate PostgreSQL
     alt #LightGreen Проверяем аккаунт на наличие токенов в Redis
         activate Redis
@@ -16,12 +16,12 @@ alt #LightBlue Проверка на валидность
     else #LightCoral Создаем токены
         AuthService -> AuthService: Создаём access_token и refresh_token
         AuthService -> Redis: Client ID, access_token, refresh_token
-        Redis -> AuthService: Токены добавлены
+        Redis -> AuthService: 200
         deactivate Redis
         AuthService -> Client: access_token, refresh_token
     end
 else #LightCoral Значения не валидны
-    PostgreSQL -> AuthService: Вернуть False
-    AuthService -> Client: Вернуть False
+    PostgreSQL -> AuthService: 404
+    AuthService -> Client: 404
 end
 @enduml
