@@ -9,7 +9,7 @@ class User(postgresql.Base_pgsql):
     """Модель пользователя.
 
     Args:
-        postgresql (config): Базоый декларотивный класс.
+        postgresql (config): Базовый декларотивный класс.
     """
 
     __tablename__ = 'user'
