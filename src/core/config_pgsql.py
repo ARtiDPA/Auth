@@ -27,7 +27,7 @@ class SettingsPGsql(BaseSettings):
         Returns:
             str: Ссылка на движек.
         """
-        link_engine = """asyncpg+psycopg2://
+        link_engine = """asyncpg://
             {db_user}:
             {db_password}@
             {db_host}:
