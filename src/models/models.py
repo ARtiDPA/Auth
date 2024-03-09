@@ -2,10 +2,10 @@
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from db import postgresql
+from db import pgsql
 
 
-class User(postgresql.Base_pgsql):
+class User(pgsql.Base_pgsql):
     """Модель пользователя.
 
     Args:
