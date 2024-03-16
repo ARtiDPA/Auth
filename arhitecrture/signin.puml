@@ -1,0 +1,27 @@
+@startuml Вход
+title: Вход
+Client -> AuthService: login, password - [POST]
+alt #LightBlue Проверка на валидность
+    activate AuthService
+    AuthService -> AuthService: Кэширование пароля
+    AuthService -> PostgreSQL: Поиск аккаунта
+    activate PostgreSQL
+    PostgreSQL -> AuthService: Client data
+    deactivate PostgreSQL
+    alt #LightGreen Проверяем аккаунт на наличие токенов в Redis
+        activate Redis
+        AuthService -> Redis: Client ID
+        Redis -> AuthService: access_token, refresh_token
+        AuthService -> Client: access_token, refresh_token
+    else #LightCoral Создаем токены
+        AuthService -> AuthService: Создаём access_token и refresh_token
+        AuthService -> Redis: Client ID, access_token, refresh_token
+        Redis -> AuthService: None
+        deactivate Redis
+        AuthService -> Client: access_token, refresh_token
+    end
+else #LightCoral Значения не валидны
+    PostgreSQL -> AuthService: None
+    AuthService -> Client: 404
+end
+@enduml
