@@ -16,7 +16,7 @@ alt #LightBlue Проверка на валидность
     else #LightCoral Создаем токены
         AuthService -> AuthService: Создаём access_token и refresh_token
         AuthService -> Redis: Client ID, access_token, refresh_token
-        Redis -> AuthService: None
+        Redis -> AuthService: Status
         deactivate Redis
         AuthService -> Client: access_token, refresh_token
     end
