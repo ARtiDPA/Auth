@@ -1,15 +1,25 @@
-"""Модели на sqlalhemy для pgsql."""
-from sqlalchemy import Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
+"""Описание модели."""
+from sqlalchemy import Integer, MetaData, String
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-from db import pgsql
+from core.config import database_settings
 
 
-class User(pgsql.Base_pgsql):
-    """Модель пользователя.
+class Base(DeclarativeBase):
+    """Описание базового класса.
 
     Args:
-        postgresql (config): Базовый декларотивный класс.
+        DeclarativeBase (clas): базовый декларативный класс
+    """
+
+    metadata = MetaData(schema=database_settings.db_schema)
+
+
+class User(Base):
+    """Описание модели пользователя.
+
+    Args:
+        Base (class): базовый класс
     """
 
     __tablename__ = 'user'
@@ -20,4 +30,6 @@ class User(pgsql.Base_pgsql):
     age: Mapped[int] = mapped_column(Integer)
     mail: Mapped[str] = mapped_column(String)
     number: Mapped[int] = mapped_column(Integer)
-    passwrod: Mapped[str] = mapped_column(String)
+    login: Mapped[str] = mapped_column(String)
+    password: Mapped[str] = mapped_column(String)
+    role: Mapped[str] = mapped_column(String)
