@@ -1,5 +1,5 @@
 """Описание модели."""
-from sqlalchemy import Integer, MetaData, String
+from sqlalchemy import DateTime, Integer, MetaData, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from core.config import database_settings
@@ -25,11 +25,10 @@ class User(Base):
     __tablename__ = 'user'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    name: Mapped[str] = mapped_column(String)
-    surname: Mapped[str] = mapped_column(String)
-    age: Mapped[int] = mapped_column(Integer)
-    mail: Mapped[str] = mapped_column(String)
-    number: Mapped[int] = mapped_column(Integer)
-    login: Mapped[str] = mapped_column(String)
+    login: Mapped[str] = mapped_column(String(100))
     password: Mapped[str] = mapped_column(String)
-    role: Mapped[str] = mapped_column(String)
+    mail: Mapped[str] = mapped_column(String, nullable=True)
+    number: Mapped[int] = mapped_column(Integer, nullable=True)
+    name: Mapped[str] = mapped_column(String(100))
+    surname: Mapped[str] = mapped_column(String(100))
+    date_of_birth: Mapped[int] = mapped_column(DateTime, nullable=True)
