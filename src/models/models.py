@@ -27,8 +27,9 @@ class User(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     login: Mapped[str] = mapped_column(String(100))
     password: Mapped[str] = mapped_column(String)
-    mail: Mapped[str] = mapped_column(String, nullable=True)
+    # Использую 254 потому что адресс почты не должен превышать 254 символа
+    mail: Mapped[str] = mapped_column(String(254))  # noqa: WPS432
     number: Mapped[int] = mapped_column(Integer, nullable=True)
-    name: Mapped[str] = mapped_column(String(100))
-    surname: Mapped[str] = mapped_column(String(100))
+    name: Mapped[str] = mapped_column(String(100), nullable=True)
+    surname: Mapped[str] = mapped_column(String(100), nullable=True)
     date_of_birth: Mapped[int] = mapped_column(DateTime, nullable=True)
