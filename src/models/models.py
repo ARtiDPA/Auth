@@ -1,7 +1,7 @@
 """Описание модели."""
 from datetime import date
 
-from sqlalchemy import DateTime, Integer, MetaData, String
+from sqlalchemy import Date, Integer, MetaData, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from core.config import database_settings
@@ -34,4 +34,4 @@ class User(Base):
     number: Mapped[int] = mapped_column(Integer, nullable=True)
     name: Mapped[str] = mapped_column(String(100), nullable=True)
     surname: Mapped[str] = mapped_column(String(100), nullable=True)
-    date_of_birth: Mapped[date] = mapped_column(DateTime, nullable=True)
+    date_of_birth: Mapped[date] = mapped_column(Date, nullable=True)
