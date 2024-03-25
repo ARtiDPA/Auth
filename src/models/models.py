@@ -1,4 +1,6 @@
 """Описание модели."""
+from datetime import date
+
 from sqlalchemy import DateTime, Integer, MetaData, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -27,9 +29,9 @@ class User(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     login: Mapped[str] = mapped_column(String(100))
     password: Mapped[str] = mapped_column(String)
-    # Использую 254 потому что адресс почты не должен превышать 254 символа
+    # Использую 254 потому что адрес почты не должен превышать 254 символа
     mail: Mapped[str] = mapped_column(String(254))  # noqa: WPS432
     number: Mapped[int] = mapped_column(Integer, nullable=True)
     name: Mapped[str] = mapped_column(String(100), nullable=True)
     surname: Mapped[str] = mapped_column(String(100), nullable=True)
-    date_of_birth: Mapped[int] = mapped_column(DateTime, nullable=True)
+    date_of_birth: Mapped[date] = mapped_column(DateTime, nullable=True)
