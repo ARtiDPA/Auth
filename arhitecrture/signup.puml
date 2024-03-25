@@ -1,0 +1,24 @@
+@startuml Регистрация
+title: Регистрация
+Client -> AuthService: data - [POST]
+alt #LightBlue проверка почты, логина, телефона
+    activate AuthService
+    AuthService -> AuthService: Проверка на правильное написание почты, номера телефона
+    alt #LightGreen проверка на наличее данных в БД
+        activate PostgreSQL
+        AuthService -> PostgreSQL: Login, mail, password - [POST]
+        PostgreSQL -> AuthService: None
+        AuthService -> AuthService: Создать access_token, refresh_token
+        activate Redis
+        AuthService -> Redis: access_token, refresh_token
+        Redis -> AuthService: Status
+    else #LightCoral
+        PostgreSQL -> AuthService: Client data
+        deactivate PostgreSQL
+        AuthService -> Client: 404
+    end    
+else #LightCoral
+    AuthService -> Client: 404
+    deactivate AuthService
+end
+@enduml
