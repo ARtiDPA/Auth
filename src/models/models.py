@@ -35,3 +35,19 @@ class User(Base):
     name: Mapped[str] = mapped_column(String(100), nullable=True)
     surname: Mapped[str] = mapped_column(String(100), nullable=True)
     date_of_birth: Mapped[date] = mapped_column(Date, nullable=True)
+    role: Mapped[int] = mapped_column(Integer)
+
+
+class Role(Base):
+    """Описание модели роли.
+
+    Args:
+        Base (class): базовый класс
+    """
+
+    __tablename__ = 'role'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(100))
+    access_level: Mapped[int] = mapped_column(Integer)
+    description: Mapped[str] = mapped_column(String)
