@@ -1,8 +1,9 @@
 """Файл для работы с базой данных."""
 from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
 
 from .config import dbsettings
-from .models import Base
+from .models import Base, User
 
 
 class PgsSql():
@@ -21,7 +22,7 @@ class PgsSql():
 
         self.engine = create_engine(self.dsn)
 
-    def create_all_tables(self) -> None:
+    def create_all_tables(self) -> bool:
         """Создание таблиц в бд.
 
         Returns:
@@ -32,6 +33,22 @@ class PgsSql():
         except Exception:
             return False
         return True
+    
+    def found_user(self, login) -> bool:
+        with Session(self.engine) as connect:
+            user = connect.query(User).filter(User.login == login).first()
+            if user is None:
+                return True
+        return False
+
+
+    def create_acaunt(self, login, password):
+        if self.found_user(login):
+            user = User(login=login, password=password)
+            with Session(self.engine) as connect:
+                connect.add(user)
+                connect.commit()
+                connect.refresh(user)
 
 
 pgsql = PgsSql()
