@@ -88,6 +88,15 @@ class RedisClient():
         """
         return self.redis_client.get(key)
 
+    def set_key(self, key, value):
+        """Вставка пары ключ-значение в Redis.
+
+        Args:
+            key (str): ключ
+            value (str): значение
+        """
+        redis_client.set_key(key, value)
+
 
 redis_client = RedisClient()
 pgsql = PostgresDataBase()
