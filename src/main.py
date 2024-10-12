@@ -48,8 +48,20 @@ def register(login: str,
 
 @app.post('/authorization')
 def authorrization(login: str,
-                   password: str
+                   password: str,
                    ):
+    """Маршрутизатор авторизации.
+
+    Args:
+        login (str): логин пользователя
+        password (str): пароль пользователя
+
+    Raises:
+        HTTPException: _description_
+
+    Returns:
+        _type_: _description_
+    """
     if not pgsql.found_user(login):
         return {'message': 'all rigth user is found)'}
     raise HTTPException(404, 'error: пользователь с таким имене отсутствует')        
