@@ -2,7 +2,7 @@
 from sqlalchemy import Integer, MetaData, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-from .config import dbsettings
+from .config import pgsqlsettings
 
 
 class Base(DeclarativeBase):
@@ -12,7 +12,7 @@ class Base(DeclarativeBase):
         DeclarativeBase (class): декларативный класс
     """
 
-    metadata = MetaData(schema=dbsettings.db_shema)
+    metadata = MetaData(schema=pgsqlsettings.db_shema)
 
 
 class User(Base):
