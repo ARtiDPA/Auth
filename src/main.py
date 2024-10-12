@@ -42,17 +42,18 @@ def register(login: str,
         if pgsql.found_user(login):
             pgsql.create_acaunt(login, password)
             return {'message', 'акаунт создан'}
-        return HTTPException(409, 'error: акаунт с таким именем уже создан')
-    return HTTPException(412, 'error: пароли не совпадают')
+        raise HTTPException(409, 'error: акаунт с таким именем уже создан')
+    raise HTTPException(412, 'error: пароли не совпадают')
 
 
 @app.post('/authorization')
 def authorrization(login: str,
                    password: str
                    ):
-    if pgsql.found_user(login):
+    if not pgsql.found_user(login):
         return {'message': 'all rigth user is found)'}
-    return HTTPException(404, 'error: пользователь с таким имене отсуствует')        
+    raise HTTPException(404, 'error: пользователь с таким имене отсутствует')        
+
 
 if __name__ == '__main__':
     uvicorn.run(app, port=8000)
