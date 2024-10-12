@@ -25,7 +25,8 @@ def statup():
 @app.post('/register')
 def register(login: str,
              password: str,
-             two_password: str):
+             two_password: str,
+             ):
 
     if password == two_password:
         if pgsql.found_user(login):
