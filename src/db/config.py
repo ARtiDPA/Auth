@@ -6,13 +6,14 @@ load_dotenv()
 
 
 class PgSqlSettingsq(BaseSettings):
-    """Настройки для работы с базой данных.
+    """Настройки для работы с PgSQL.
 
     Args:
         BaseSettings (class): базовые настройки.
     """
 
     model_config = SettingsConfigDict(env_file='.env')
+
     db_host: str
     db_password: str
     db_port: int
@@ -22,4 +23,19 @@ class PgSqlSettingsq(BaseSettings):
     db_driver: str
 
 
-dbsettings = PgSqlSettingsq()
+class RedisSettings(BaseSettings):
+    """Настройки для работы с Redis.
+
+    Args:
+        BaseSettings (class): базовые настройки.
+    """
+
+    model_config = SettingsConfigDict(env_file='.env')
+
+    redis_db: int
+    redis_host: str
+    redis_port: int
+
+
+pgsqlsettings = PgSqlSettingsq()
+redissettings = RedisSettings()

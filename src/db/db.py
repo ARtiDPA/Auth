@@ -2,23 +2,25 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from .config import dbsettings
+from .config import pgsqlsettings, redissettings
 from .models import Base, User
 from .auth.hash import hashed
 
+from redis import Redis
 
-class PgsSql():
+
+class PostgresDataBase():
     """Файл для работь с бд."""
 
     def __init__(self) -> None:
         """Init func."""
         self.dsn = '{driver}://{user}:{password}@{host}:{port}/{name}'.format(
-            driver=dbsettings.db_driver,
-            name=dbsettings.db_name,
-            password=dbsettings.db_password,
-            host=dbsettings.db_host,
-            port=dbsettings.db_port,
-            user=dbsettings.db_user,
+            driver=pgsqlsettings.db_driver,
+            name=pgsqlsettings.db_name,
+            password=pgsqlsettings.db_password,
+            host=pgsqlsettings.db_host,
+            port=pgsqlsettings.db_port,
+            user=pgsqlsettings.db_user,
         )
 
         self.engine = create_engine(self.dsn)
@@ -65,4 +67,16 @@ class PgsSql():
             connect.refresh(user)
 
 
-pgsql = PgsSql()
+class RedisClient():
+    """Класс для работы с Redis."""
+
+    def __init__(self):
+        """Init fucn."""
+        self.redis_client = Redis(
+            host=redissettings.redis_host,
+            port=redissettings.redis_port,
+            db=redissettings.redis_db,
+        )
+
+
+pgsql = PostgresDataBase()
