@@ -77,7 +77,7 @@ class RedisClient():
             db=redissettings.redis_db,
         )
 
-    def get_key(self, key) -> str:
+    def get_key(self, key: str) -> str:
         """Получения ключа из Redis.
 
         Args:
@@ -88,14 +88,18 @@ class RedisClient():
         """
         return self.redis_client.get(key)
 
-    def set_key(self, key, value):
-        """Вставка пары ключ-значение в Redis.
+    def set_key(self, key: str, value: str, time: int | None) -> bool:
+        """Вставка ключа в Redis.
 
         Args:
             key (str): ключ
             value (str): значение
+            time (int | None): время жизни ключ/значения.
+
+        Returns:
+            bool: статус-код выполнения функции
         """
-        redis_client.set_key(key, value)
+        return redis_client.set_key(key, value, time)
 
 
 redis_client = RedisClient()
