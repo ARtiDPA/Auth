@@ -77,5 +77,17 @@ class RedisClient():
             db=redissettings.redis_db,
         )
 
+    def get_key(self, key) -> str:
+        """Получения ключа из Redis.
 
+        Args:
+            key (str): ключ
+
+        Returns:
+            str: значение ключа
+        """
+        return self.redis_client.get(key)
+
+
+redis_client = RedisClient()
 pgsql = PostgresDataBase()
