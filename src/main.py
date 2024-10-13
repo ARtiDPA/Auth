@@ -36,8 +36,12 @@ def register(login: str,
         password (str): пароль
         two_password (str): второй пароль
 
+    Raises:
+        HTTPException: Пользователь с таким именем уже сущетсвует
+        HTTPException: Пароли не совпадают
+
     Returns:
-        JSON: status_code
+        _type_: _description_
     """
     if password == two_password:
         if not pgsql.found_user(login):
