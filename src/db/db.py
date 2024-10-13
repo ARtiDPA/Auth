@@ -9,6 +9,7 @@ from .models import Base, User
 
 from typing import Union
 
+
 class PostgresDataBase():
     """Файл для работь с бд."""
 
@@ -49,8 +50,8 @@ class PostgresDataBase():
         with Session(self.engine) as connect:
             user = connect.query(User).filter(User.login == login).first()
             if user is None:
-                return True
-        return False
+                return False
+        return True
 
     def create_acaunt(self, login, password) -> None:
         """Создания акаунта пользователя.
@@ -65,6 +66,19 @@ class PostgresDataBase():
             connect.add(user)
             connect.commit()
             connect.refresh(user)
+
+    def get_user(self, login) -> Union[User, bool]:
+        """Получение пользователя.
+
+        Args:
+            login (str): данные о пользователе
+
+        Returns:
+            Union[int, bool]: [айди пользователя, False]
+        """
+        with Session(self.engine) as connect:
+            user = connect.query(User).filter(User.login == login).first()
+            return user if user else False
 
 
 class RedisClient():

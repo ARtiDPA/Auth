@@ -18,19 +18,24 @@ class Hashed:
         Returns:
             bytes: хэшированный пароль
         """
-        return bcrypt.hashpw(password.encode('utf-8'), self.salt)
+        return bcrypt.hashpw(password.encode('utf-8'), self.salt).decode(
+            'utf-8',
+        )
 
-    def check_password(self, hash_password: bytes, password: str) -> bool:
+    def check_password(self, hash_password: str, password: str) -> bool:
         """Проверка паролей.
 
         Args:
-            hash_password (bytes): Хэшированный пароль
+            hash_password (str): Хэшированный пароль
             password (str): пароль
 
         Returns:
             bool: True если совпадают пароли иначе False
         """
-        return bcrypt.checkpw(password.encode('utf-8', hash_password))
+        return bcrypt.checkpw(
+            password.encode('utf-8'), 
+            hash_password.encode('utf-8'),
+            )
 
 
 hashed = Hashed()

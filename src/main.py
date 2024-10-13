@@ -3,7 +3,8 @@ from fastapi import FastAPI
 from db.db import pgsql
 import uvicorn
 from fastapi import HTTPException
-
+from db.auth.tokens import tokens
+from db.auth.hash import hashed
 
 app = FastAPI()
 
@@ -39,7 +40,7 @@ def register(login: str,
         JSON: status_code
     """
     if password == two_password:
-        if pgsql.found_user(login):
+        if not pgsql.found_user(login):
             pgsql.create_acaunt(login, password)
             return {'message', 'акаунт создан'}
         raise HTTPException(409, 'error: акаунт с таким именем уже создан')
@@ -62,9 +63,18 @@ def authorrization(login: str,
     Returns:
         _type_: _description_
     """
-    if not pgsql.found_user(login):
-        return {'message': 'all rigth user is found)'}
-    raise HTTPException(404, 'error: пользователь с таким имене отсутствует')        
+    if pgsql.found_user(login):
+        user = pgsql.get_user(login)
+        if hashed.check_password(
+            hash_password=user.password,
+            password=password,
+        ):
+            return {
+                'access token: ': tokens.create_access_tokens(user.id),
+                'refresh tokne: ': tokens.create_refresh_tokens(user.id),
+            }
+        return HTTPException(403, 'eror: пароли не совпадают')
+    raise HTTPException(404, 'error: пользователь с таким имене отсутствует')
 
 
 if __name__ == '__main__':
