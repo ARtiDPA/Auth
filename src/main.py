@@ -81,5 +81,27 @@ def authorrization(login: str,
     raise HTTPException(404, 'error: пользователь с таким имене отсутствует')
 
 
+@app.get('/valid_tokens')
+def valid_tokens(access_token: str):
+    """Маршрутизатор проверки токена.
+
+    Args:
+        access_token (str): access_token
+
+    Raises:
+        HTTPException: ошибка токена
+
+    Returns:
+        JSON: данные о пользователе
+    """
+    result = tokens.verifi_tokens(access_token)
+    if result:
+        return {
+            'message': 'токен действителен',
+            'user_id': result,
+            }
+    raise HTTPException(401, 'токен не действителен')
+
+
 if __name__ == '__main__':
     uvicorn.run(app, port=8000)
