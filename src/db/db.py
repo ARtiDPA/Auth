@@ -7,6 +7,7 @@ from .auth.hash import hashed
 from .config import pgsqlsettings, redissettings
 from .models import Base, User
 
+from typing import Union
 
 class PostgresDataBase():
     """Файл для работь с бд."""
@@ -88,7 +89,12 @@ class RedisClient():
         """
         return self.redis_client.get(key)
 
-    def set_key(self, key: str, value: str, time: int | None) -> bool:
+    def set_key(
+            self,
+            key: str,
+            value: str,
+            time: Union[int, None] = 0,
+            ) -> bool:
         """Вставка ключа в Redis.
 
         Args:
