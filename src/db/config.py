@@ -43,5 +43,19 @@ class RedisSettings(BaseServisSettings):
     redis_db: str
 
 
+class JwtSettings(BaseServisSettings):
+    """Валидация данных для JWT токенов.
+
+    Args:
+        BaseServisSettings (class): Настройки сервиса.
+    """
+
+    JWT_SEKRET_KEY: str
+    ALGORITM: str
+    ACCESS_TIME: int
+    REFRESH_TIME: int
+
+
 pgsqlsettings = PgSqlSettingsq()
 redissettings = RedisSettings()
+jwtsettings = JwtSettings()

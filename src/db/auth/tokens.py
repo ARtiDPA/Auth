@@ -2,9 +2,7 @@
 from jose import jwt, JWTError
 from datetime import datetime, timedelta
 from typing import Union
-
-JWT_SEKRET_KEY = 'ABOBA'
-ALGORITM = 'HS256'
+from ..config import jwtsettings
 
 
 class JwtTokens():
@@ -12,7 +10,10 @@ class JwtTokens():
 
     def __init__(self):
         """Init file."""
-        pass
+        self.algoritm = jwtsettings.ALGORITM
+        self.jwt_sekret_key = jwtsettings.JWT_SEKRET_KEY
+        self.time_access = jwtsettings.ACCESS_TIME
+        self.time_refresh = jwtsettings.REFRESH_TIME
 
     def create_access_tokens(self, id_user: int) -> str:
         """Создайние access токена.
@@ -23,9 +24,9 @@ class JwtTokens():
         Returns:
             str: access токен
         """
-        expires = datetime.now() + timedelta(minutes=15) 
-        jwt_decode = {'exp': expires, 'sub': str(id)}
-        return jwt.encode(jwt_decode, JWT_SEKRET_KEY, ALGORITM)
+        expires = datetime.now() + timedelta(minutes=self.time_access) 
+        jwt_decode = {'exp': expires, 'sub': str(id_user)}
+        return jwt.encode(jwt_decode, self.jwt_sekret_key, self.algoritm)
 
     def create_refresh_tokens(self, id_user: int) -> str:
         """Создание refresh токена.
@@ -36,9 +37,9 @@ class JwtTokens():
         Returns:
             str: refresh токен
         """
-        expires = datetime.now() + timedelta(days=7)
-        jwt_decode = {'exp': expires, 'sub': str(id)}
-        return jwt.encode(jwt_decode, JWT_SEKRET_KEY, ALGORITM)
+        expires = datetime.now() + timedelta(days=self.time_refresh)
+        jwt_decode = {'exp': expires, 'sub': str(id_user)}
+        return jwt.encode(jwt_decode, self.jwt_sekret_key, self.algoritm)
 
     def verifi_tokens(self, access_tokens: str) -> Union[str, bool]:
         """Проверка токена.
@@ -50,7 +51,11 @@ class JwtTokens():
             Union[str, bool]: [payload, Ошибка декдирование токена]
         """
         try:
-            return jwt.decode(access_tokens, JWT_SEKRET_KEY, ALGORITM)
+            return jwt.decode(
+                access_tokens,
+                self.jwt_sekret_key,
+                self.algoritm,
+            )
         except JWTError:
             return False
 
