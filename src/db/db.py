@@ -107,7 +107,7 @@ class RedisClient():
             self,
             key: str,
             value: str,
-            time: Union[int, None] = 0,
+            time: Union[int, None] = None,
             ) -> bool:
         """Вставка ключа в Redis.
 
@@ -119,8 +119,8 @@ class RedisClient():
         Returns:
             bool: статус-код выполнения функции
         """
-        return redis_client.set_key(key, value, time)
+        return self.redis_client.set(key, value, time)
 
 
-redis_client = RedisClient()
+redis = RedisClient()
 pgsql = PostgresDataBase()

@@ -1,12 +1,10 @@
 """Точка входа системы."""
-import json
-
 import uvicorn
 from fastapi import FastAPI, HTTPException
 
 from db.auth.hash import hashed
 from db.auth.tokens import tokens
-from db.db import pgsql
+from db.db import pgsql, redis
 
 app = FastAPI()
 
@@ -75,9 +73,13 @@ def authorrization(login: str,
             hash_password=user.password,
             password=password,
         ):
+            access_token = tokens.create_access_tokens(user.id)
+            refresh_token = tokens.create_refresh_tokens(user.id)
+            redis.set_key(str(user.id) + ' ' + 'access_token', access_token)
+            redis.set_key(str(user.id) + ' ' + 'refresh_token', refresh_token)
             return {
-                'access token: ': tokens.create_access_tokens(user.id),
-                'refresh tokne: ': tokens.create_refresh_tokens(user.id),
+                'access token: ': access_token,
+                'refresh tokne: ': refresh_token,
             }
         return HTTPException(403, 'eror: пароли не совпадают')
     raise HTTPException(404, 'error: пользователь с таким имене отсутствует')
