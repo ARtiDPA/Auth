@@ -73,15 +73,25 @@ def authorrization(login: str,
             hash_password=user.password,
             password=password,
         ):
+            access_token = redis.get_key(str(user.id) + '_' + 'access_token')
+            refresh_token = redis.get_key(str(user.id) + '_' + 'refresh_token')
+            if access_token:
+                return {
+                    'access token: ': access_token,
+                    'refresh tokne: ': refresh_token,
+                }
+            elif refresh_token:
+                redis.delete_key(user.id + '_' + 'refresh_token')
+
             access_token = tokens.create_access_tokens(user.id)
             refresh_token = tokens.create_refresh_tokens(user.id)
-            redis.set_key(str(user.id) + ' ' + 'access_token', access_token, 15 * 60)
-            redis.set_key(str(user.id) + ' ' + 'refresh_token', refresh_token, 7 * 24 * 60 * 60)
+            redis.set_key(str(user.id) + '_' + 'access_token', access_token, 15 * 60)
+            redis.set_key(str(user.id) + '_' + 'refresh_token', refresh_token, 7 * 24 * 60 * 60)
             return {
                 'access token: ': access_token,
                 'refresh tokne: ': refresh_token,
             }
-        return HTTPException(403, 'eror: пароли не совпадают')
+        raise HTTPException(403, 'eror: пароли не совпадают')
     raise HTTPException(404, 'error: пользователь с таким имене отсутствует')
 
 
@@ -130,7 +140,7 @@ def update_tones(refresh_tokens: str):
             'refresh_token': refresh_tokens,
         }
     raise HTTPException(401, 'error: токен не действителен')
-     
+
 
 if __name__ == '__main__':
     uvicorn.run(app, port=8000)

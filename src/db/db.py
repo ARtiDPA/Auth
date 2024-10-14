@@ -121,6 +121,21 @@ class RedisClient():
         """
         return self.redis_client.set(key, value, time)
 
+    def delete_key(
+            self,
+            key: str,
+    ) -> bool:
+        """Удаление данных из redis.
+
+        Args:
+            key (str): ключ
+
+        Returns:
+            bool: если не произошло ошибок то True
+        """
+        self.redis_client.delete(key)
+        return bool
+
 
 redis = RedisClient()
 pgsql = PostgresDataBase()
