@@ -1,7 +1,9 @@
 """Файл по работе с JWT токенами."""
-from jose import jwt, JWTError
 from datetime import datetime, timedelta
 from typing import Union
+
+from jose import JWTError, jwt
+
 from ..config import jwtsettings
 
 

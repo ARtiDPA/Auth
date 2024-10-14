@@ -1,10 +1,12 @@
 """Точка входа системы."""
-from fastapi import FastAPI
-from db.db import pgsql
+import json
+
 import uvicorn
-from fastapi import HTTPException
-from db.auth.tokens import tokens
+from fastapi import FastAPI, HTTPException
+
 from db.auth.hash import hashed
+from db.auth.tokens import tokens
+from db.db import pgsql
 
 app = FastAPI()
 
@@ -102,7 +104,31 @@ def valid_tokens(access_token: str):
             }
     raise HTTPException(401, 'токен не действителен')
 
-@app.g
+
+@app.post('/update_tokens')
+def update_tones(refresh_tokens: str):
+    """Маршрутизатор обновление токенов.
+
+    Args:
+        refresh_tokens (str): refresh токен
+
+    Raises:
+        HTTPException: Ошибка при валидации токена
+
+    Returns:
+        json: access и refresh токены
+    """
+    payload = tokens.verifi_tokens(refresh_tokens)
+    if payload:
+        user_id = payload.get('sub')
+        access_token = tokens.create_access_tokens(user_id)
+        refresh_tokens = tokens.create_refresh_tokens(user_id)
+        return {
+            'access_token': access_token,
+            'refresh_token': refresh_tokens,
+        }
+    raise HTTPException(401, 'error: токен не действителен')
+     
 
 if __name__ == '__main__':
     uvicorn.run(app, port=8000)

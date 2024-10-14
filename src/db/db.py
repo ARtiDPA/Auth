@@ -1,4 +1,6 @@
 """Файл для работы с базой данных."""
+from typing import Union
+
 from redis import Redis
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
@@ -6,8 +8,6 @@ from sqlalchemy.orm import Session
 from .auth.hash import hashed
 from .config import pgsqlsettings, redissettings
 from .models import Base, User
-
-from typing import Union
 
 
 class PostgresDataBase():
