@@ -75,8 +75,8 @@ def authorrization(login: str,
         ):
             access_token = tokens.create_access_tokens(user.id)
             refresh_token = tokens.create_refresh_tokens(user.id)
-            redis.set_key(str(user.id) + ' ' + 'access_token', access_token)
-            redis.set_key(str(user.id) + ' ' + 'refresh_token', refresh_token)
+            redis.set_key(str(user.id) + ' ' + 'access_token', access_token, 15 * 60)
+            redis.set_key(str(user.id) + ' ' + 'refresh_token', refresh_token, 7 * 24 * 60 * 60)
             return {
                 'access token: ': access_token,
                 'refresh tokne: ': refresh_token,
