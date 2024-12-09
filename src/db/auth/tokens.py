@@ -12,7 +12,7 @@ class JwtTokens():
 
     def __init__(self):
         """Init file."""
-        self.algoritm = jwtsettings.ALGORITM
+        self.algoritm = jwtsettings.ALGORITHM
         self.jwt_sekret_key = jwtsettings.JWT_SEKRET_KEY
         self.time_access = jwtsettings.ACCESS_TIME
         self.time_refresh = jwtsettings.REFRESH_TIME

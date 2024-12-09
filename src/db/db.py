@@ -2,7 +2,7 @@
 from typing import Union
 
 from redis import Redis
-from sqlalchemy import create_engine
+import sqlalchemy
 from sqlalchemy.orm import Session
 
 from .auth.hash import hashed
@@ -24,7 +24,7 @@ class PostgresDataBase():
             user=pgsqlsettings.db_user,
         )
 
-        self.engine = create_engine(self.dsn)
+        self.engine = sqlalchemy.create_engine(self.dsn)
 
     def create_all_tables(self) -> bool:
         """Создание таблиц в бд.
@@ -133,8 +133,7 @@ class RedisClient():
         Returns:
             bool: если не произошло ошибок то True
         """
-        self.redis_client.delete(key)
-        return bool
+        return self.redis_client.delete(key)
 
 
 redis = RedisClient()

@@ -10,7 +10,7 @@ class BaseServisSettings(BaseSettings):
     """
 
     model_config = SettingsConfigDict(
-        env_file='.env',
+        env_file='src/.env',
         extra='ignore',
     )
 
@@ -51,7 +51,7 @@ class JwtSettings(BaseServisSettings):
     """
 
     JWT_SEKRET_KEY: str
-    ALGORITM: str
+    ALGORITHM: str
     ACCESS_TIME: int
     REFRESH_TIME: int
 
