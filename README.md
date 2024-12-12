@@ -4,10 +4,14 @@
 ВНИМАНИЕ! Перед запуском у вас должен быть установлен Docker
 
 1. [Docker](https://docker.qubitpi.org/desktop/setup/install/windows-install/) для скачивания
-   
-2. Изменить название файла с `.env.example` на `.env`
 
-3. Далее выполнить команду: `docker compose up --build`
+2. клонируем репозиторий `git clone https://github.com/ARtiDPA/Auth`
+
+3. переходим в проект `cd Auth`
+   
+4. Изменям название файла с `.env.example` на `.env`
+
+5. Далее выполнить команду: `docker compose up --build`
 ---
 ## Скриншоты запущенного приложение:
 - ![image](https://github.com/user-attachments/assets/6ecbdb0b-4cbb-4360-8754-3894c64b7bff)
