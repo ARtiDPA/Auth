@@ -19,6 +19,40 @@
 - ![image](https://github.com/user-attachments/assets/f1848dc5-d3dd-4f80-9c21-54a956e89abe)
 
 - ![image](https://github.com/user-attachments/assets/a7b20db4-96b6-4bc9-8976-728fdfc910f7)
+---
+## архетиктура файлов сервиса
+```
+Auth:
+│   main.py - Точка входа
+│   __init__.py
+│   
+├───db
+│   │   config.py - файл настроек
+│   │   db.py - файл для работы с БД
+│   │   models.py - Модели для БД
+│   │   __init__.py
+│   │   
+│   └───auth
+│           hash.py - файл для работы с хэш
+│           tokens.py - файл для работы с JWT-токенами
+│           __init__.py       
+│
+└───routes - маршрутизаторы 
+    ├───system
+    │      route.py
+    │      __init__.py
+    │ 
+    │   
+    │
+    ├───tokens
+    │      route.py
+    │      __init__.py
+    │  
+    └───user
+        │   route.py
+        │   __init__.py
+
+```
 
 ---
 ## Технологии:
